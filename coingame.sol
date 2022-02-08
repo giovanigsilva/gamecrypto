@@ -9,16 +9,16 @@ contract Token {
     string public name = "EnergyCoin";
     string public symbol = "ENEC";
     
-    uint public numeroDeMoedas = 21000000;
-    uint public casasDecimais = 8;
+    uint public numbercoin = 21000000;
+    uint public hdecimals = 8;
     
     uint public burnRate = 1; //Queima x% dos token transferidos de uma carteira para outra
     
     event Transfer(address indexed from, address indexed to, uint value);
     event Approval(address indexed owner, address indexed spender, uint value);
     
-    uint public totalSupply = numeroDeMoedas * 10 ** casasDecimais;
-    uint public decimals = casasDecimais;
+    uint public totalSupply = numbercoin * 10 ** hdecimals;
+    uint public decimals = hdecimals;
     
     address public contractOwner;
     
