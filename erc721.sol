@@ -8,8 +8,8 @@ contract newNFT is NFTokenMetadata, Ownable {
  
   
   constructor() {
-    nftName = "STAR Token";
-    nftSymbol = "STAR";
+    nftName = "ENERGY NFT";
+    nftSymbol = "ENECF";
     nextTokenId = 0;
   }
  
@@ -34,11 +34,12 @@ contract newNFT is NFTokenMetadata, Ownable {
   tokensIdOfOwner[] public tokensIdsList;
   
   //função para cunhar NFT
-  function mint(address _to, string calldata _uri) public {
+  function mint(address _to, string calldata _uri) public{
     nextTokenId++;
     super._mint(_to, nextTokenId);
     super._setTokenUri(nextTokenId, _uri);
     updateTokensIdList(_to, nextTokenId);
+    
   }
   
   
