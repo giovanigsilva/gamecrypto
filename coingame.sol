@@ -1,24 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.11;
 
-contract Token {
-    
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Token is Ownable{
+    //IERC20 public token;
+
+    YourToken yourToken;
+    event Bought(uint256 amount);
+    event Sold(uint256 amount);
     mapping(address => uint) public balances;
     mapping(address => mapping(address => uint)) public allowance;
     
     string public name = "EnergyCoin";
     string public symbol = "ENEC";
     
-    uint public numbercoin = 21000000;
-    uint public hdecimals = 8;
+    uint public numeroDeMoedas = 21000000;
+    uint public casasDecimais = 8;
     
     uint public burnRate = 1; //Queima x% dos token transferidos de uma carteira para outra
     
     event Transfer(address indexed from, address indexed to, uint value);
     event Approval(address indexed owner, address indexed spender, uint value);
     
-    uint public totalSupply = numbercoin * 10 ** hdecimals;
-    uint public decimals = hdecimals;
+    uint public totalSupply = numeroDeMoedas * 10 ** casasDecimais;
+    uint public decimals = casasDecimais;
     
     address public contractOwner;
     
@@ -81,6 +87,15 @@ contract Token {
             return true;
         }
         return false;
+    }
+
+    function sell(uint256 amount) public {
+        require(amount > 0, "You need to sell at least some tokens");
+        allowance = Token.allowance(msg.sender, address(this));
+        require(allowance >= amount, "Check the token allowance");
+        Token.transferFrom(msg.sender, address(this), amount);
+        msg.sender.transfer(amount);
+        emit Sold(amount);
     }
     
 }
