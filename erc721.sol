@@ -85,7 +85,7 @@ contract newNFT is NFTokenMetadata, Ownable {
   }
 
   function buyTokens() public payable returns (uint256 tokenAmount) {
-    require(msg.value > 0, "Send ETH to buy some tokens");
+    require(msg.value > 0, "Send BNB to buy some tokens");
 
     uint256 amountToBuy = msg.value * tokensPerBNB;
 
