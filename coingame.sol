@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract tokenGame is Ownable{
     //IERC20 public token;
     uint256 public tokensPerBNB = 100;
-    event BuyTokens(address buyer, uint256 amountOfETH, uint256 amountOfTokens);
-    event SellTokens(address seller, uint256 amountOfTokens, uint256 amountOfETH);
+    event BuyTokens(address buyer, uint256 amountOfBNB, uint256 amountOfTokens);
+    event SellTokens(address seller, uint256 amountOfTokens, uint256 amountOfBNB);
 
     mapping(address => uint) public balances;
     mapping(address => mapping(address => uint)) public allowance;
