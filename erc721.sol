@@ -115,15 +115,15 @@ contract newNFT is NFTokenMetadata, Ownable {
     require(userBalance >= tokenAmountToSell, "Your balance is lower than the amount of tokens you want to sell");
 
     // Check that the Vendor's balance is enough to do the swap
-    uint256 amountOfETHToTransfer = tokenAmountToSell / tokensPerBNB;
-    uint256 ownerETHBalance = address(this).balance;
-    require(ownerETHBalance >= amountOfETHToTransfer, "Vendor has not enough funds to accept the sell request");
+    uint256 amountOfBNBToTransfer = tokenAmountToSell / tokensPerBNB;
+    uint256 ownerBNBBalance = address(this).balance;
+    require(ownerBNBBalance >= amountOfBNBToTransfer, "Vendor has not enough funds to accept the sell request");
 
     (bool sent) = yourToken.transferFrom(msg.sender, address(this), tokenAmountToSell);
     require(sent, "Failed to transfer tokens from user to vendor");
 
 
-    (sent,) = msg.sender.call{value: amountOfETHToTransfer}("");
+    (sent,) = msg.sender.call{value: amountOfBNBToTransfer}("");
     require(sent, "Failed to send BNB to the user");
   }
 
