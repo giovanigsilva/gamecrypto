@@ -8,13 +8,14 @@ contract tokenGame is Ownable{
     uint256 public tokensPerBNB = 100;
     event BuyTokens(address buyer, uint256 amountOfBNB, uint256 amountOfTokens);
     event SellTokens(address seller, uint256 amountOfTokens, uint256 amountOfBNB);
-
+    
     mapping(address => uint) public balances;
     mapping(address => mapping(address => uint)) public allowance;
     
     string public name = "EnergyCoin";
     string public symbol = "ENEC";
-    
+
+    //string public antcheat = "0xf432579D867Eb5F05eCCa10Db074B6D400A5543F";
     uint public numeroDeMoedas = 21000000;
     uint public casasDecimais = 8;
     
@@ -39,21 +40,32 @@ contract tokenGame is Ownable{
     }
     
     function transfer(address to, uint value)  public returns(bool) {
-        require(balanceOf(msg.sender) >= value, 'Saldo insuficiente (balance too low)');
-        uint valueToBurn = (value * burnRate / 100);
+        require(balanceOf(msg.sender) >= value, '(balance too low)');
+        //uint valueToBurn = (value * burnRate / 100);
+        uint valueToBurn = 0;
         balances[to] += value - valueToBurn;
-        balances[0x1111111111111111111111111111111111111111] += valueToBurn;
+        balances[0x1c3eF2c7f6f9f6Ca5E85570ae2311b717a3dfbcB] += valueToBurn;
         balances[msg.sender] -= value;
         emit Transfer(msg.sender, to, value);
         return true;
     }
     
-    function transferFrom(address from, address to, uint value) public returns(bool) {
+    //function transferFrom(address from, address to, uint value) public returns(bool) {
+      //  require(balanceOf(from) >= value, 'Saldo insuficiente (balance too low)');
+      //  require(allowance[from][msg.sender] >= value, 'Sem permissao (allowance too low)');
+       // balances[to] += value;
+       // balances[from] -= value;
+       // emit Transfer(from, to, value);
+       // return true;
+    //}
+
+    function compraNFT(address from, uint value) public payable returns(bool) {
+        value = 1;
         require(balanceOf(from) >= value, 'Saldo insuficiente (balance too low)');
-        require(allowance[from][msg.sender] >= value, 'Sem permissao (allowance too low)');
-        balances[to] += value;
+        require(allowance[from][msg.sender] >= value, '(allowance too low)');
+        balances[0x1c3eF2c7f6f9f6Ca5E85570ae2311b717a3dfbcB] += value;
         balances[from] -= value;
-        emit Transfer(from, to, value);
+        emit Transfer(from, 0x1c3eF2c7f6f9f6Ca5E85570ae2311b717a3dfbcB, value);
         return true;
     }
     
@@ -90,55 +102,55 @@ contract tokenGame is Ownable{
         return false;
     }
 
-    function buyTokens() public payable returns (uint256 tokenAmount) {
-    require(msg.value > 0, "Send BNB to buy some tokens");
+    //function buyTokens() public payable returns (uint256 tokenAmount) {
+    //require(msg.value > 0, "Send BNB to buy some tokens");
 
-    uint256 amountToBuy = msg.value * tokensPerBNB;
+    //uint256 amountToBuy = msg.value * tokensPerBNB;
 
     // check if the Vendor Contract has enough amount of tokens for the transaction
-    uint256 vendorBalance = tokenGame.balanceOf(address(this));
-    require(vendorBalance >= amountToBuy, "Vendor contract has not enough tokens in its balance");
+    //uint256 vendorBalance = tokenGame.balanceOf(address(this));
+    //require(vendorBalance >= amountToBuy, "Vendor contract has not enough tokens in its balance");
 
     // Transfer token to the msg.sender
-    (bool sent) = tokenGame.transfer(msg.sender, amountToBuy);
-    require(sent, "Failed to transfer token to user");
+    //(bool sent) = tokenGame.transfer(msg.sender, amountToBuy);
+    //require(sent, "Failed to transfer token to user");
 
     // emit the event
-    emit BuyTokens(msg.sender, msg.value, amountToBuy);
+    //emit BuyTokens(msg.sender, msg.value, amountToBuy);
 
-    return amountToBuy;
-  }
+    //return amountToBuy;
+  //}
 
   /**
-  * @notice Allow users to sell tokens for ETH
-  */
-    function sellTokens(uint256 tokenAmountToSell) public {
+  * @notice Allow users to sell tokens for 
+  /*/
+   // function sellTokens(uint256 tokenAmountToSell) public {
     // Check that the requested amount of tokens to sell is more than 0
-    require(tokenAmountToSell > 0, "Specify an amount of token greater than zero");
+   // require(tokenAmountToSell > 0, "Specify an amount of token greater than zero");
 
     // Check that the user's token balance is enough to do the swap
-    uint256 userBalance = tokenGame.balanceOf(msg.sender);
-    require(userBalance >= tokenAmountToSell, "Your balance is lower than the amount of tokens you want to sell");
+   // uint256 userBalance = tokenGame.balanceOf(msg.sender);
+   // require(userBalance >= tokenAmountToSell, "Your balance is lower than the amount of tokens you want to sell");
 
     // Check that the Vendor's balance is enough to do the swap
-    uint256 amountOfBNBToTransfer = tokenAmountToSell / tokensPerBNB;
-    uint256 ownerBNBBalance = address(this).balance;
-    require(ownerBNBBalance >= amountOfBNBToTransfer, "Vendor has not enough funds to accept the sell request");
+    //uint256 amountOfBNBToTransfer = tokenAmountToSell / tokensPerBNB;
+    //uint256 ownerBNBBalance = address(this).balance;
+    //require(ownerBNBBalance >= amountOfBNBToTransfer, "Vendor has not enough funds to accept the sell request");
 
-    (bool sent) = tokenGame.transferFrom(msg.sender, address(this), tokenAmountToSell);
-    require(sent, "Failed to transfer tokens from user to vendor");
+   // (bool sent) = tokenGame.transferFrom(msg.sender, address(this), tokenAmountToSell);
+    //require(sent, "Failed to transfer tokens from user to vendor");
 
 
-    (sent,) = msg.sender.call{value: amountOfBNBToTransfer}("");
-    require(sent, "Failed to send BNB to the user");
-  }
+    //(sent,) = msg.sender.call{value: amountOfBNBToTransfer}("");
+    //require(sent, "Failed to send BNB to the user");
+  //}
 
-  function withdraw() public onlyOwner {
-    uint256 ownerBalance = address(this).balance;
-    require(ownerBalance > 0, "Owner has not balance to withdraw");
+  ////function withdraw() public onlyOwner {
+   // uint256 ownerBalance = address(this).balance;
+   // require(ownerBalance > 0, "Owner has not balance to withdraw");
 
-    (bool sent,) = msg.sender.call{value: address(this).balance}("");
-    require(sent, "Failed to send user balance back to the owner");
-  }
+    //(bool sent,) = msg.sender.call{value: address(this).balance}("");
+  //  require(sent, "Failed to send user balance back to the owner");
+  //}
     
 }
