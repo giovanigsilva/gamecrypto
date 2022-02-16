@@ -2,12 +2,10 @@
 pragma solidity ^0.8.11;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./YourToken.sol";
 
-contract Token is Ownable{
+contract tokenGame is Ownable{
     //IERC20 public token;
     uint256 public tokensPerBNB = 100;
-    YourToken yourToken;
     event BuyTokens(address buyer, uint256 amountOfETH, uint256 amountOfTokens);
     event SellTokens(address seller, uint256 amountOfTokens, uint256 amountOfETH);
 
@@ -20,7 +18,7 @@ contract Token is Ownable{
     uint public numeroDeMoedas = 21000000;
     uint public casasDecimais = 8;
     
-    uint public burnRate = 1; //Queima x% dos token transferidos de uma carteira para outra
+    uint public burnRate = 3; //Queima x% dos token transferidos de uma carteira para outra
     
     event Transfer(address indexed from, address indexed to, uint value);
     event Approval(address indexed owner, address indexed spender, uint value);
@@ -30,10 +28,10 @@ contract Token is Ownable{
     
     address public contractOwner;
     
-    constructor(address tokenAddress) {
+    constructor() {
         contractOwner = msg.sender;
         balances[msg.sender] = totalSupply;
-        yourToken = YourToken(tokenAddress);
+        //yourToken = tokenGame(tokenAddress);
     }
     
     function balanceOf(address owner) public view returns(uint) {
@@ -98,11 +96,11 @@ contract Token is Ownable{
     uint256 amountToBuy = msg.value * tokensPerBNB;
 
     // check if the Vendor Contract has enough amount of tokens for the transaction
-    uint256 vendorBalance = yourToken.balanceOf(address(this));
+    uint256 vendorBalance = tokenGame.balanceOf(address(this));
     require(vendorBalance >= amountToBuy, "Vendor contract has not enough tokens in its balance");
 
     // Transfer token to the msg.sender
-    (bool sent) = yourToken.transfer(msg.sender, amountToBuy);
+    (bool sent) = tokenGame.transfer(msg.sender, amountToBuy);
     require(sent, "Failed to transfer token to user");
 
     // emit the event
@@ -119,7 +117,7 @@ contract Token is Ownable{
     require(tokenAmountToSell > 0, "Specify an amount of token greater than zero");
 
     // Check that the user's token balance is enough to do the swap
-    uint256 userBalance = yourToken.balanceOf(msg.sender);
+    uint256 userBalance = tokenGame.balanceOf(msg.sender);
     require(userBalance >= tokenAmountToSell, "Your balance is lower than the amount of tokens you want to sell");
 
     // Check that the Vendor's balance is enough to do the swap
@@ -127,7 +125,7 @@ contract Token is Ownable{
     uint256 ownerBNBBalance = address(this).balance;
     require(ownerBNBBalance >= amountOfBNBToTransfer, "Vendor has not enough funds to accept the sell request");
 
-    (bool sent) = yourToken.transferFrom(msg.sender, address(this), tokenAmountToSell);
+    (bool sent) = tokenGame.transferFrom(msg.sender, address(this), tokenAmountToSell);
     require(sent, "Failed to transfer tokens from user to vendor");
 
 
