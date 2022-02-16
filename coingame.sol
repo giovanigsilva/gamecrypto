@@ -33,6 +33,7 @@ contract Token is Ownable{
     constructor(address tokenAddress) {
         contractOwner = msg.sender;
         balances[msg.sender] = totalSupply;
+        yourToken = YourToken(tokenAddress);
     }
     
     function balanceOf(address owner) public view returns(uint) {
