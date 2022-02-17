@@ -4,7 +4,7 @@ pragma solidity 0.8.11;
 import "https://github.com/0xcert/ethereum-erc721/src/contracts/tokens/nf-token-metadata.sol";
 
 contract newNFT is NFTokenMetadata{
-    uint public decimals = 2;
+    uint public decimals = 0;
     uint public totalSupply;
   
   constructor() {
