@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-import "./BEP20.sol";
+import "./importadobomber.sol";
 
 contract BCoinToken is BEP20Detailed, BEP20 {
   constructor() BEP20Detailed("Bomber Coin", "BCOIN", 18) {
