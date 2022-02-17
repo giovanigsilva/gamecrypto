@@ -19,7 +19,7 @@ contract newNFT is NFTokenMetadata{
     _mintage(msg.sender, uri);  
   }
 
-  function _mintage(address _to, string calldata _uri) private returns(uint){
+  function _mintage(address _to, string calldata _uri) internal returns(uint){
     nextTokenId++;
     super._mint(_to, nextTokenId);
     super._setTokenUri(nextTokenId, _uri);
