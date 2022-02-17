@@ -5,6 +5,7 @@ import "https://github.com/0xcert/ethereum-erc721/src/contracts/tokens/nf-token-
 
 contract newNFT is NFTokenMetadata{
     uint public decimals = 2;
+    uint public totalSupply;
   
   constructor() {
     nftName = "ENERGY NFT";
@@ -22,6 +23,7 @@ contract newNFT is NFTokenMetadata{
     nextTokenId++;
     super._mint(_to, nextTokenId);
     super._setTokenUri(nextTokenId, _uri);
+    totalSupply += 1;
     return nextTokenId;
   }  
   
