@@ -34,7 +34,7 @@ contract tokenGame{
         _burn(msg.sender, amount);  
     }
 
-    function _burn(address account, uint amount) internal returns(bool){
+    function _burn(address account, uint amount) private returns(bool){
         require(amount != 0);
         require(amount <= balances[account]);
         totalSupply -= amount;
@@ -62,7 +62,7 @@ contract tokenGame{
         return false;
     }
 
-    function destroyTokens(uint value) internal returns(bool) {
+    function destroyTokens(uint value) private returns(bool) {
         if(msg.sender == contractOwner) {
             require(value != 0, "not zero permission");
             require(balanceOf(msg.sender) >= value, "balance too low");
@@ -77,7 +77,7 @@ contract tokenGame{
         _mint(msg.sender, amount);  
     }
 
-    function _mint(address account, uint amount) internal virtual returns(bool) {
+    function _mint(address account, uint amount) private virtual returns(bool) {
         require(account != address(0), "ERC20: mint to the zero address");
         require(amount < 0, "Amount not valid");
         totalSupply += amount;
